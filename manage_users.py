@@ -20,7 +20,7 @@ def create_user(first_name, last_name, role):
     print(f"Role: {role.title()}")
     print(f"------------------------------------------------")
     print(f"Please copy the following GitHub Pages invite link and send it to the user:")
-    print(f"https://andrewzaletski.github.io/UCSD_Baseball_26/set_password.html?token={token}")
+    print(f"https://jackkalsched.github.io/UCSD_Baseball_26/set_password.html?token={token}")
     print(f"(For local testing, use http://localhost:8000/set_password.html?token={token})")
     print(f"------------------------------------------------\n")
 
