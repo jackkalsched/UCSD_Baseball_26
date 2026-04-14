@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCSD Baseball Internal Portal</title>
+    <!-- Add Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Link to custom stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-decor"></div>
+    <div class="container">
+        <header class="glass-panel">
+            <div class="logo">
+                <h1>UCSD Baseball</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">Roster</a></li>
+                    <li><a href="#">Schedule</a></li>
+                    <li><a href="#">Analytics</a></li>
+                    <li><a href="{{ url_for('logout') }}" style="color: var(--secondary-color);">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="hero glass-panel">
+                <h2>Welcome to the Team Portal, {{ user_id }}</h2>
+                <p>Track performance, manage schedules, and stay connected.</p>
+                <button class="primary-btn">View Latest Analytics</button>
+            </section>
+            
+            <section class="quick-links">
+                <div class="card glass-panel">
+                    <h3>Upcoming Game</h3>
+                    <p>vs. Cal State Fullerton</p>
+                    <p class="date">Friday, 6:00 PM</p>
+                </div>
+                <div class="card glass-panel">
+                    <h3>Recent Updates</h3>
+                    <p>New hitting metrics uploaded from yesterday's practice.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
