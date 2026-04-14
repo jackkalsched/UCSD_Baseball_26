@@ -1,42 +1,34 @@
 import argparse
-import secrets
-import sqlite3
-import database
+import base64
+import json
 
 def create_user(first_name, last_name, role):
-    # Construct User ID (First Initial + Last Name)
     user_id = f"{first_name[0].upper()}{last_name.capitalize()}"
     
-    # Generate a secure invite token
-    token = secrets.token_urlsafe(32)
+    payload = {
+        "userId": user_id,
+        "role": role
+    }
     
-    conn = database.get_db_connection()
-    try:
-        conn.execute(
-            'INSERT INTO users (user_id, role, invite_token) VALUES (?, ?, ?)',
-            (user_id, role, token)
-        )
-        conn.commit()
-        print(f"\n✅ User successfully mapped to database.")
-        print(f"------------------------------------------------")
-        print(f"Name: {first_name} {last_name}")
-        print(f"User ID: {user_id}")
-        print(f"Role: {role.title()}")
-        print(f"------------------------------------------------")
-        print(f"Please copy the following invite link and send it to the user:")
-        print(f"http://localhost:8000/set_password/{token}")
-        print(f"------------------------------------------------\n")
-    except sqlite3.IntegrityError:
-        print(f"Error: User ID '{user_id}' already exists in the database.")
-    finally:
-        conn.close()
+    payload_str = json.dumps(payload)
+    token = base64.b64encode(payload_str.encode('utf-8')).decode('utf-8')
+    
+    print(f"\n✅ User successfully mapped.")
+    print(f"------------------------------------------------")
+    print(f"Name: {first_name} {last_name}")
+    print(f"User ID: {user_id}")
+    print(f"Role: {role.title()}")
+    print(f"------------------------------------------------")
+    print(f"Please copy the following GitHub Pages invite link and send it to the user:")
+    print(f"https://andrewzaletski.github.io/UCSD_Baseball_26/set_password.html?token={token}")
+    print(f"(For local testing, use http://localhost:8000/set_password.html?token={token})")
+    print(f"------------------------------------------------\n")
 
 if __name__ == '__main__':
-    database.init_db()
-    parser = argparse.ArgumentParser(description="Manage UCSD Baseball Users")
+    parser = argparse.ArgumentParser(description="Manage UCSD Baseball Users (Static Builder)")
     subparsers = parser.add_subparsers(dest='command', required=True)
     
-    create_parser = subparsers.add_parser('create', help="Create a new user invite")
+    create_parser = subparsers.add_parser('create', help="Create a new user invite link")
     create_parser.add_argument('--first', required=True, help="User's first name")
     create_parser.add_argument('--last', required=True, help="User's last name")
     create_parser.add_argument('--role', required=True, choices=['player', 'coach', 'analyst'], help="User's role")

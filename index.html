@@ -9,7 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Link to custom stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="static/style.css">
+    <script src="js/auth.js"></script>
+    <script>checkAuth();</script>
 </head>
 <body>
     <div class="background-decor"></div>
@@ -24,14 +26,14 @@
                     <li><a href="#">Roster</a></li>
                     <li><a href="#">Schedule</a></li>
                     <li><a href="#">Analytics</a></li>
-                    <li><a href="{{ url_for('logout') }}" style="color: var(--secondary-color);">Logout</a></li>
+                    <li><a href="#" onclick="logout(); return false;" style="color: var(--secondary-color);">Logout</a></li>
                 </ul>
             </nav>
         </header>
         
         <main>
             <section class="hero glass-panel">
-                <h2>Welcome to the Team Portal, {{ user_id }}</h2>
+                <h2 id="welcome-text">Welcome to the Team Portal</h2>
                 <p>Track performance, manage schedules, and stay connected.</p>
                 <button class="primary-btn">View Latest Analytics</button>
             </section>
@@ -49,5 +51,6 @@
             </section>
         </main>
     </div>
+    <script>updateUI();</script>
 </body>
 </html>
