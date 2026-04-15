@@ -8,9 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Link to custom stylesheet -->
-    <link rel="stylesheet" href="static/style.css">
-    <script src="js/auth.js"></script>
+    <!-- Link to custom stylesheet with cache-buster -->
+    <link rel="stylesheet" href="static/style.css?v=2">
+    <script src="js/auth.js?v=2"></script>
     <script>checkAuth();</script>
 </head>
 <body>
@@ -21,21 +21,39 @@
                 <h1>UCSD Baseball</h1>
             </div>
             <nav>
-                <ul>
+                <ul style="align-items: center;">
                     <li><a href="#" class="active">Dashboard</a></li>
-                    <li><a href="#">Roster</a></li>
+                    <li id="nav-roster"><a href="#">Roster</a></li>
                     <li><a href="#">Schedule</a></li>
                     <li><a href="#">Analytics</a></li>
-                    <li><a href="#" onclick="logout(); return false;" style="color: var(--secondary-color);">Logout</a></li>
+                    <li id="analyst-toggle-container" class="hidden" style="display: flex; align-items: center; margin-left: 1rem;">
+                        <button id="analyst-toggle-btn" class="primary-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; background-color: var(--secondary-color); color: var(--bg-dark);">Switch to Player View</button>
+                    </li>
+                    <li><a href="#" onclick="logout(); return false;" style="color: var(--secondary-color); margin-left: 1rem;">Logout</a></li>
                 </ul>
             </nav>
         </header>
         
         <main>
-            <section class="hero glass-panel">
-                <h2 id="welcome-text">Welcome to the Team Portal</h2>
+            <!-- PLAYER HERO -->
+            <section id="player-hero" class="hero glass-panel hidden">
+                <h2 id="welcome-text-player">Welcome to the Team Portal</h2>
                 <p>Track performance, manage schedules, and stay connected.</p>
                 <button class="primary-btn">View Latest Analytics</button>
+            </section>
+            
+            <!-- COACH HERO -->
+            <section id="coach-hero" class="hero-split hidden">
+                <div class="card glass-panel hero-box">
+                    <h3 style="font-size: 2rem; margin-bottom: 1rem;">View My Reports</h3>
+                    <p style="margin-bottom: 2rem; color: var(--text-muted);">Access customizable reports and personalized charts over time.</p>
+                    <button class="primary-btn">Go to Reports</button>
+                </div>
+                <div class="card glass-panel hero-box">
+                    <h3 style="font-size: 2rem; margin-top: 1.5rem; margin-bottom: 1rem;">Scouting</h3>
+                    <p style="margin-bottom: 2rem; color: var(--text-muted);">Analyze opponents and review deep dive scouting reports for other teams.</p>
+                    <button class="primary-btn">View Scouting Database</button>
+                </div>
             </section>
             
             <section class="quick-links">
@@ -44,9 +62,15 @@
                     <p>vs. Cal State Fullerton</p>
                     <p class="date">Friday, 6:00 PM</p>
                 </div>
-                <div class="card glass-panel">
+                <!-- COACH QUICK LINK -->
+                <div id="recent-updates-box" class="card glass-panel hidden">
                     <h3>Recent Updates</h3>
                     <p>New hitting metrics uploaded from yesterday's practice.</p>
+                </div>
+                <!-- PLAYER QUICK LINK -->
+                <div id="last-game-box" class="card glass-panel hidden">
+                    <h3>View My Last Game</h3>
+                    <p>Review metrics and footage from your previous appearance.</p>
                 </div>
             </section>
         </main>

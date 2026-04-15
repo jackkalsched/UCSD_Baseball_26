@@ -55,12 +55,58 @@ function logout() {
     window.location.href = getBaseUrl() + 'login.html';
 }
 
+function applyView(role, user) {
+    const navRoster = document.getElementById('nav-roster');
+    const playerHero = document.getElementById('player-hero');
+    const coachHero = document.getElementById('coach-hero');
+    const recentUpdatesBox = document.getElementById('recent-updates-box');
+    const lastGameBox = document.getElementById('last-game-box');
+    
+    // Set titles using user ID where present
+    const welcomeTextPlayer = document.getElementById('welcome-text-player');
+    if (welcomeTextPlayer) welcomeTextPlayer.textContent = `Welcome to the Team Portal, ${user.userId}`;
+
+    if (role === 'player') {
+        if (navRoster) navRoster.classList.add('hidden');
+        if (playerHero) playerHero.classList.remove('hidden');
+        if (coachHero) coachHero.classList.add('hidden');
+        if (recentUpdatesBox) recentUpdatesBox.classList.add('hidden');
+        if (lastGameBox) lastGameBox.classList.remove('hidden');
+    } else {
+        // coach or analyst default
+        if (navRoster) navRoster.classList.remove('hidden');
+        if (playerHero) playerHero.classList.add('hidden');
+        if (coachHero) coachHero.classList.remove('hidden');
+        if (recentUpdatesBox) recentUpdatesBox.classList.remove('hidden');
+        if (lastGameBox) lastGameBox.classList.add('hidden');
+    }
+}
+
 function updateUI() {
     const user = JSON.parse(localStorage.getItem('currentUser'));
-    if (user) {
-        const welcomeText = document.getElementById('welcome-text');
-        if (welcomeText) {
-            welcomeText.textContent = `Welcome to the Team Portal, ${user.userId}`;
+    if (!user) return;
+    
+    const toggleContainer = document.getElementById('analyst-toggle-container');
+    const toggleBtn = document.getElementById('analyst-toggle-btn');
+
+    if (user.role === 'analyst') {
+        if (toggleContainer) toggleContainer.classList.remove('hidden');
+        
+        let currentView = window.currentAnalystView || 'coach';
+        applyView(currentView, user);
+        
+        if (toggleBtn) {
+            toggleBtn.textContent = currentView === 'coach' ? 'Switch to Player View' : 'Switch to Coach View';
+            toggleBtn.onclick = function(e) {
+                e.preventDefault();
+                window.currentAnalystView = currentView === 'coach' ? 'player' : 'coach';
+                currentView = window.currentAnalystView;
+                applyView(currentView, user);
+                toggleBtn.textContent = currentView === 'coach' ? 'Switch to Player View' : 'Switch to Coach View';
+            };
         }
+    } else {
+        if (toggleContainer) toggleContainer.classList.add('hidden');
+        applyView(user.role, user);
     }
 }
