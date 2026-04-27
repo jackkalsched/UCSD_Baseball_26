@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Analytics - UCSD Baseball</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css?v=2">
+    <script src="js/auth.js?v=2"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script>
+        // Use basic auth check
+        checkAuth();
+    </script>
+    <style>
+        .analytics-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+        }
+        
+        .filters-toolbar {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        
+        .filter-group select {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            outline: none;
+            font-family: inherit;
+        }
+        
+        .heatmaps-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .heatmaps-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-decor"></div>
+    <div class="container" style="max-width: 1200px;">
+        <header class="glass-panel">
+            <div class="logo">
+                <a href="index.html" style="text-decoration:none; color:inherit;"><h1>UCSD Baseball</h1></a>
+            </div>
+            <nav>
+                <ul style="align-items: center;">
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li id="nav-roster"><a href="#">Roster</a></li>
+                    <li><a href="#">Schedule</a></li>
+                    <li><a href="player_analytics.html" class="active">Analytics</a></li>
+                    <li><a href="#" onclick="logout(); return false;" style="color: var(--secondary-color); margin-left: 1rem;">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="analytics-container">
+                <div class="card glass-panel" style="padding: 1.5rem;">
+                    <h2 style="margin-bottom: 1rem;" id="analytics-title">My Analytics</h2>
+                    <div id="loading-state" style="color: var(--secondary-color);">Loading data...</div>
+                    <div id="error-state" class="hidden" style="color: #ff6b6b;"></div>
+                    
+                    <div id="analytics-content" class="hidden">
+                        <!-- Filters -->
+                        <div class="filters-toolbar glass-panel" style="margin-bottom: 2rem; background: rgba(0,0,0,0.2);">
+                            <div class="filter-group">
+                                <label for="pitcherHandFilter">Pitcher Hand</label>
+                                <select id="pitcherHandFilter">
+                                    <option value="All">All</option>
+                                    <option value="R">Right</option>
+                                    <option value="L">Left</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="pitchTypeFilter">Pitch Type</label>
+                                <select id="pitchTypeFilter">
+                                    <option value="All">All Types</option>
+                                    <option value="Fastball">Fastball</option>
+                                    <option value="Offspeed">Offspeed</option>
+                                    <option value="Breaking">Breaking</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="countFilter">Count</label>
+                                <select id="countFilter">
+                                    <option value="All">All Counts</option>
+                                    <option value="Ahead">Ahead</option>
+                                    <option value="Even">Even</option>
+                                    <option value="Behind">Behind</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Heatmaps -->
+                        <div class="heatmaps-section" style="margin-bottom: 2rem;">
+                            <div class="card glass-panel">
+                                <h3>Slugging Heatmap</h3>
+                                <div id="slg-heatmap" class="chart-container" style="height: 350px;"></div>
+                            </div>
+                            <div class="card glass-panel">
+                                <h3>Expected wOBA Heatmap</h3>
+                                <div id="xwoba-heatmap" class="chart-container" style="height: 350px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Rolling Chart -->
+                        <div class="card glass-panel">
+                            <h3>5-Game Rolling xwOBA by Pitch Type</h3>
+                            <div id="rolling-chart" class="chart-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/player_analytics.js?v=1"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initAnalytics();
+        });
+    </script>
+</body>
+</html>
