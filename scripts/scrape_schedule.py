@@ -42,12 +42,9 @@ def scrape():
         result_div = li.select_one(".sidearm-schedule-game-result")
         result = result_div.get_text(strip=True) if result_div else ""
 
-        # Determine status from result and actual date, not the site's stale CSS class.
+        # Determine status purely from date comparison.
         game_date = parse_game_date(date_str)
-        if result or (game_date and game_date < today):
-            status = "completed"
-        else:
-            status = "upcoming"
+        status = "completed" if (game_date and game_date < today) else "upcoming"
 
         games.append({
             "date": date_str,
