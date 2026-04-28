@@ -2,14 +2,27 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
-from datetime import datetime, timezone
+import re
+from datetime import datetime, timezone, date
 
 URL = "https://ucsdtritons.com/sports/baseball/schedule/2026"
+SCHEDULE_YEAR = 2026
+
+def parse_game_date(date_str):
+    """Parse 'Feb 13 (Fri)' -> date object, or None on failure."""
+    m = re.match(r'(\w+ \d+)', date_str)
+    if m:
+        try:
+            return datetime.strptime(f"{m.group(1)} {SCHEDULE_YEAR}", "%b %d %Y").date()
+        except ValueError:
+            pass
+    return None
 
 def scrape():
     resp = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
+    today = date.today()
 
     games = []
     for li in soup.select(".sidearm-schedule-games-container > li.sidearm-schedule-game"):
@@ -29,10 +42,12 @@ def scrape():
         result_div = li.select_one(".sidearm-schedule-game-result")
         result = result_div.get_text(strip=True) if result_div else ""
 
-        if "upcoming-game" in classes:
-            status = "upcoming"
-        else:
+        # Determine status from result and actual date, not the site's stale CSS class.
+        game_date = parse_game_date(date_str)
+        if result or (game_date and game_date < today):
             status = "completed"
+        else:
+            status = "upcoming"
 
         games.append({
             "date": date_str,

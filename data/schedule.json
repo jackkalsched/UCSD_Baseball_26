@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-28T16:59:56Z",
+  "updated": "2026-04-28T17:05:08Z",
   "games": [
     {
       "date": "Feb 13 (Fri)",
@@ -8,7 +8,7 @@
       "location": "Los Angeles, Calif.",
       "home_away": "away",
       "result": "L,4-8",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Feb 14 (Sat)",
@@ -17,7 +17,7 @@
       "location": "Los Angeles, Calif.",
       "home_away": "away",
       "result": "L,2-7",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Feb 15 (Sun)",
@@ -26,7 +26,7 @@
       "location": "Los Angeles, Calif.",
       "home_away": "away",
       "result": "W,8-7",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Feb 24 (Tue)",
@@ -35,7 +35,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "W,8-7(10 Inn.)",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Feb 27 (Fri)",
@@ -44,7 +44,7 @@
       "location": "Lafayette, La.",
       "home_away": "away",
       "result": "W,7-3",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Feb 28 (Sat)",
@@ -53,7 +53,7 @@
       "location": "Lafayette, La.",
       "home_away": "away",
       "result": "L,0-8",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 1 (Sun)",
@@ -62,7 +62,7 @@
       "location": "Lafayette, La.",
       "home_away": "away",
       "result": "L,3-4",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 5 (Thu)",
@@ -71,7 +71,7 @@
       "location": "Cincinnati, Ohio",
       "home_away": "away",
       "result": "L,5-9",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 6 (Fri)",
@@ -80,7 +80,7 @@
       "location": "Cincinnati, Ohio",
       "home_away": "away",
       "result": "L,1-16(7 Inn.)",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 6 (Fri)",
@@ -89,7 +89,7 @@
       "location": "Cincinnati, Ohio",
       "home_away": "away",
       "result": "L,3-13(7 Inn.)",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 8 (Sun)",
@@ -98,7 +98,7 @@
       "location": "Cincinnati, Ohio",
       "home_away": "away",
       "result": "L,8-9(11 Inn.)",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 13 (Fri)",
@@ -107,7 +107,7 @@
       "location": "Northridge, Calif.",
       "home_away": "away",
       "result": "W,17-16",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 14 (Sat)",
@@ -116,7 +116,7 @@
       "location": "Northridge, Calif.",
       "home_away": "away",
       "result": "W,6-4",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 15 (Sun)",
@@ -125,7 +125,7 @@
       "location": "Northridge, Calif.",
       "home_away": "away",
       "result": "W,12-4",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 20 (Fri)",
@@ -134,7 +134,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "W,12-6",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 21 (Sat)",
@@ -143,7 +143,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "L,4-9",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 22 (Sun)",
@@ -152,7 +152,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "W,14-10",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 24 (Tue)",
@@ -161,7 +161,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "L,0-6",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 25 (Wed)",
@@ -170,7 +170,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "L,4-12",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 27 (Fri)",
@@ -179,7 +179,7 @@
       "location": "Davis, Calif.",
       "home_away": "away",
       "result": "W,9-4",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 28 (Sat)",
@@ -188,7 +188,7 @@
       "location": "Davis, Calif.",
       "home_away": "away",
       "result": "W,3-2",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Mar 29 (Sun)",
@@ -197,7 +197,7 @@
       "location": "Davis, Calif.",
       "home_away": "away",
       "result": "W,9-5",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 2 (Thu)",
@@ -206,7 +206,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "W,10-9",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 3 (Fri)",
@@ -215,7 +215,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "L,3-6",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 4 (Sat)",
@@ -224,7 +224,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "W,8-0",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 10 (Fri)",
@@ -233,7 +233,7 @@
       "location": "Santa Barbara, Calif.",
       "home_away": "away",
       "result": "W,4-3",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 11 (Sat)",
@@ -242,7 +242,7 @@
       "location": "Santa Barbara, Calif.",
       "home_away": "away",
       "result": "L,10-11(11 Inn.)",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 12 (Sun)",
@@ -251,7 +251,7 @@
       "location": "Santa Barbara, Calif.",
       "home_away": "away",
       "result": "L,1-3",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 14 (Tue)",
@@ -260,7 +260,7 @@
       "location": "San Diego, Calif.",
       "home_away": "away",
       "result": "L,1-9",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 17 (Fri)",
@@ -269,7 +269,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "L,3-11",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 18 (Sat)",
@@ -278,7 +278,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "L,3-5",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 19 (Sun)",
@@ -287,7 +287,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "W,16-15",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 21 (Tue)",
@@ -296,7 +296,7 @@
       "location": "San Diego, Calif.",
       "home_away": "away",
       "result": "L,5-6(10 Inn.)",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 24 (Fri)",
@@ -305,7 +305,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "W,11-10",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 25 (Sat)",
@@ -314,7 +314,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "W,9-4",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 26 (Sun)",
@@ -323,7 +323,7 @@
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
       "result": "L,7-9",
-      "status": "upcoming"
+      "status": "completed"
     },
     {
       "date": "Apr 28 (Tue)",
