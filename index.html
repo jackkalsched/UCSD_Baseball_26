@@ -83,7 +83,7 @@
             const widget = document.getElementById('schedule-widget');
             if (!widget) return;
             try {
-                const resp = await fetch(getBaseUrl() + 'data/schedule.json');
+                const resp = await fetch(getBaseUrl() + 'data/schedule.json?t=' + Date.now(), { cache: 'no-store' });
                 if (!resp.ok) throw new Error();
                 const data = await resp.json();
 
