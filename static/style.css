@@ -161,6 +161,85 @@ nav a:hover, nav a.active {
     font-weight: 600;
 }
 
+/* Schedule Widget */
+.next-game {
+    background: rgba(0, 98, 155, 0.15);
+    border: 1px solid rgba(0, 98, 155, 0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.next-game-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--secondary-color);
+    margin-bottom: 0.4rem;
+}
+
+.next-game-opponent {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.next-game-details {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.next-game-location {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.15rem;
+}
+
+.recent-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.game-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-top: 1px solid var(--glass-border);
+}
+
+.game-opponent {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.game-result {
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.result-win { color: #22c55e; }
+.result-loss { color: #ef4444; }
+
+.schedule-link {
+    display: inline-block;
+    margin-top: 1.25rem;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.schedule-link:hover {
+    color: var(--secondary-color);
+}
+
 /* Role-Based UI Utilities */
 .hidden {
     display: none !important;

@@ -58,9 +58,11 @@
             
             <section class="quick-links">
                 <div class="card glass-panel">
-                    <h3>Upcoming Game</h3>
-                    <p>vs. Cal State Fullerton</p>
-                    <p class="date">Friday, 6:00 PM</p>
+                    <h3>Schedule</h3>
+                    <div id="schedule-widget">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Loading...</p>
+                    </div>
+                    <a href="https://ucsdtritons.com/sports/baseball/schedule/2026" target="_blank" class="schedule-link">Full Schedule →</a>
                 </div>
                 <!-- COACH QUICK LINK -->
                 <div id="recent-updates-box" class="card glass-panel hidden">
@@ -76,5 +78,52 @@
         </main>
     </div>
     <script>updateUI();</script>
+    <script>
+        async function loadSchedule() {
+            const widget = document.getElementById('schedule-widget');
+            if (!widget) return;
+            try {
+                const resp = await fetch(getBaseUrl() + 'data/schedule.json');
+                if (!resp.ok) throw new Error();
+                const data = await resp.json();
+
+                const upcoming = data.games.filter(g => g.status === 'upcoming');
+                const completed = data.games.filter(g => g.status === 'completed');
+                const nextGame = upcoming[0];
+                const recent = completed.slice(-2).reverse();
+
+                let html = '';
+
+                if (nextGame) {
+                    const prefix = nextGame.home_away === 'away' ? '@ ' : 'vs. ';
+                    html += `<div class="next-game">
+                        <div class="next-game-label">Next Game</div>
+                        <div class="next-game-opponent">${prefix}${nextGame.opponent}</div>
+                        <div class="next-game-details">${nextGame.date}${nextGame.time ? ' · ' + nextGame.time : ''}</div>
+                        ${nextGame.location ? `<div class="next-game-location">${nextGame.location}</div>` : ''}
+                    </div>`;
+                } else {
+                    html += '<p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;">Season complete.</p>';
+                }
+
+                if (recent.length > 0) {
+                    html += '<div class="recent-label">Recent Results</div>';
+                    for (const g of recent) {
+                        const prefix = g.home_away === 'away' ? '@ ' : 'vs. ';
+                        const isWin = g.result.startsWith('W');
+                        html += `<div class="game-row">
+                            <span class="game-opponent">${prefix}${g.opponent}</span>
+                            <span class="game-result ${isWin ? 'result-win' : 'result-loss'}">${g.result}</span>
+                        </div>`;
+                    }
+                }
+
+                widget.innerHTML = html;
+            } catch (e) {
+                widget.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">Schedule unavailable.</p>';
+            }
+        }
+        loadSchedule();
+    </script>
 </body>
 </html>
