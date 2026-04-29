@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scouting - UCSD Baseball</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css?v=2">
+    <script src="js/auth.js?v=2"></script>
+    <script>checkAuth();</script>
+    <style>
+        /* ── Search state ── */
+        .search-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 40vh;
+            text-align: center;
+            gap: 1.5rem;
+        }
+
+        .search-hero h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .search-hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .search-bar-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 560px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.07);
+            color: var(--text-light);
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: #1e2a3a;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+            z-index: 10;
+            display: none;
+        }
+
+        .search-dropdown.open {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.85rem 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: background 0.15s;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(0, 98, 155, 0.2);
+        }
+
+        .dropdown-item .team-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: var(--text-light);
+        }
+
+        .dropdown-item .team-conf {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        /* ── Report state ── */
+        .report-view {
+            display: none;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .report-view.active {
+            display: flex;
+        }
+
+        /* Report header / back */
+        .report-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: none;
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .report-title h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .report-title .report-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        /* Record badge */
+        .record-badge {
+            margin-left: auto;
+            background: rgba(0, 98, 155, 0.2);
+            border: 1px solid rgba(0, 98, 155, 0.4);
+            border-radius: 10px;
+            padding: 0.6rem 1.25rem;
+            text-align: center;
+        }
+
+        .record-badge .record-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .record-badge .record-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+
+        /* Aggregate stat boxes */
+        .stat-group-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--secondary-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-box .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .stat-box .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 700px) {
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Roster grid */
+        .roster-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .roster-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .roster-table thead th {
+            text-align: left;
+            padding: 0.6rem 1rem;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .roster-table tbody td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+        }
+
+        .roster-table tbody td:first-child {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .roster-table tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .placeholder-row td {
+            color: rgba(255, 255, 255, 0.15) !important;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-decor"></div>
+    <div class="container">
+        <header class="glass-panel">
+            <div class="logo">
+                <h1>UCSD Baseball</h1>
+            </div>
+            <nav>
+                <ul style="align-items: center;">
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="#">Roster</a></li>
+                    <li><a href="#">Schedule</a></li>
+                    <li><a href="player_analytics.html">Analytics</a></li>
+                    <li><a href="scouting.html" class="active">Scouting</a></li>
+                    <li><a href="#" onclick="logout(); return false;" style="color: var(--secondary-color); margin-left: 1rem;">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+
+            <!-- ── SEARCH STATE ── -->
+            <section id="search-state" class="search-hero glass-panel" style="padding: 4rem 2rem;">
+                <h2>Scouting Report</h2>
+                <p>Search for an opponent team to generate a report.</p>
+                <div class="search-bar-wrap">
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="team-search"
+                        placeholder="Search team name (e.g. Cal Poly, USD...)"
+                        autocomplete="off"
+                    >
+                    <div class="search-dropdown" id="search-dropdown">
+                        <!-- Populated by JS -->
+                        <div class="dropdown-item">
+                            <div class="team-badge">CP</div>
+                            Cal Poly SLO
+                            <span class="team-conf">Big West</span>
+                        </div>
+                        <div class="dropdown-item">
+                            <div class="team-badge">USD</div>
+                            San Diego
+                            <span class="team-conf">WCC</span>
+                        </div>
+                        <div class="dropdown-item">
+                            <div class="team-badge">LMU</div>
+                            Loyola Marymount
+                            <span class="team-conf">WCC</span>
+                        </div>
+                        <div class="dropdown-item">
+                            <div class="team-badge">UCI</div>
+                            UC Irvine
+                            <span class="team-conf">Big West</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── REPORT STATE ── -->
+            <div id="report-state" class="report-view">
+
+                <!-- Header row -->
+                <div class="report-header">
+                    <button class="back-btn" id="back-btn">← Back</button>
+                    <div class="report-title">
+                        <h2 id="report-team-name">Cal Poly SLO</h2>
+                        <div class="report-meta">Big West Conference · 2026 Season</div>
+                    </div>
+                    <div class="record-badge">
+                        <div class="record-value" id="report-record">28–18</div>
+                        <div class="record-label">Record</div>
+                    </div>
+                </div>
+
+                <!-- Aggregate stats -->
+                <div class="glass-panel" style="padding: 2rem;">
+                    <div class="summary-grid">
+
+                        <!-- Batting -->
+                        <div>
+                            <div class="stat-group-label">Team Batting</div>
+                            <div class="stat-boxes">
+                                <div class="stat-box">
+                                    <div class="stat-value">.278</div>
+                                    <div class="stat-label">AVG</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value">.354</div>
+                                    <div class="stat-label">OBP</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value">.432</div>
+                                    <div class="stat-label">SLG</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value">47</div>
+                                    <div class="stat-label">HR</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value">8.2</div>
+                                    <div class="stat-label">R/G</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pitching -->
+                        <div>
+                            <div class="stat-group-label">Team Pitching</div>
+                            <div class="stat-boxes">
+                                <div class="stat-box">
+                                    <div class="stat-value">4.21</div>
+                                    <div class="stat-label">ERA</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value">1.32</div>
+                                    <div class="stat-label">WHIP</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value">9.1</div>
+                                    <div class="stat-label">K/9</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value">3.2</div>
+                                    <div class="stat-label">BB/9</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value">5.1</div>
+                                    <div class="stat-label">RA/G</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Roster grids -->
+                <div class="summary-grid">
+
+                    <!-- Hitters -->
+                    <div class="glass-panel roster-section" style="padding: 2rem;">
+                        <h3>Hitters</h3>
+                        <table class="roster-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>#</th>
+                                    <th>AVG</th>
+                                    <th>HR</th>
+                                    <th>RBI</th>
+                                    <th>OPS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Placeholder rows — real data will populate here -->
+                                <tr class="placeholder-row">
+                                    <td>J. Smith</td><td>3</td><td>.312</td><td>8</td><td>42</td><td>.921</td>
+                                </tr>
+                                <tr class="placeholder-row">
+                                    <td>M. Johnson</td><td>24</td><td>.295</td><td>5</td><td>31</td><td>.847</td>
+                                </tr>
+                                <tr class="placeholder-row">
+                                    <td>T. Williams</td><td>11</td><td>.281</td><td>3</td><td>28</td><td>.793</td>
+                                </tr>
+                                <tr class="placeholder-row">
+                                    <td>A. Davis</td><td>7</td><td>.264</td><td>6</td><td>35</td><td>.812</td>
+                                </tr>
+                                <tr class="placeholder-row">
+                                    <td>R. Brown</td><td>18</td><td>.251</td><td>2</td><td>19</td><td>.714</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pitchers -->
+                    <div class="glass-panel roster-section" style="padding: 2rem;">
+                        <h3>Pitchers</h3>
+                        <table class="roster-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>#</th>
+                                    <th>ERA</th>
+                                    <th>W–L</th>
+                                    <th>IP</th>
+                                    <th>K</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Placeholder rows — real data will populate here -->
+                                <tr class="placeholder-row">
+                                    <td>C. Martinez</td><td>22</td><td>2.84</td><td>7–2</td><td>66.1</td><td>78</td>
+                                </tr>
+                                <tr class="placeholder-row">
+                                    <td>D. Lee</td><td>35</td><td>3.91</td><td>5–4</td><td>57.2</td><td>61</td>
+                                </tr>
+                                <tr class="placeholder-row">
+                                    <td>K. Wilson</td><td>41</td><td>4.50</td><td>4–3</td><td>48.0</td><td>52</td>
+                                </tr>
+                                <tr class="placeholder-row">
+                                    <td>B. Taylor</td><td>29</td><td>5.12</td><td>2–4</td><td>38.2</td><td>39</td>
+                                </tr>
+                                <tr class="placeholder-row">
+                                    <td>E. Thomas</td><td>16</td><td>3.27</td><td>3–1</td><td>33.0</td><td>44</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div><!-- /report-view -->
+
+        </main>
+    </div>
+
+    <script>
+        // Toggle between search and report states for layout preview
+        const searchInput = document.getElementById('team-search');
+        const dropdown = document.getElementById('search-dropdown');
+        const searchState = document.getElementById('search-state');
+        const reportState = document.getElementById('report-state');
+        const backBtn = document.getElementById('back-btn');
+
+        searchInput.addEventListener('input', () => {
+            dropdown.classList.toggle('open', searchInput.value.length > 0);
+        });
+
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => dropdown.classList.remove('open'), 150);
+        });
+
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const teamName = item.querySelector('.team-badge').nextSibling.textContent.trim();
+                document.getElementById('report-team-name').textContent = teamName;
+                searchState.style.display = 'none';
+                reportState.classList.add('active');
+            });
+        });
+
+        backBtn.addEventListener('click', () => {
+            reportState.classList.remove('active');
+            searchState.style.display = '';
+            searchInput.value = '';
+            dropdown.classList.remove('open');
+        });
+    </script>
+</body>
+</html>

@@ -1,8 +1,13 @@
 import json
 import os
+import sys
+from pathlib import Path
 from google.cloud import bigquery
 from collections import defaultdict
 from datetime import datetime
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from analytics_suite.team_codes import get_team_name
 
 # Set your project id
 PROJECT_ID = "master-trackman-project"
@@ -21,8 +26,10 @@ def fetch_hitter_data(client):
     # or rely on frontend estimation.
     query = """
     WITH raw_data AS (
-        SELECT 
+        SELECT
             Batter,
+            BatterTeam,
+            PitcherTeam,
             GameDate,
             PitcherThrows,
             TaggedPitchType as PitchType,
@@ -32,15 +39,14 @@ def fetch_hitter_data(client):
             PlateLocSide,
             PlayResult,
             KorBB,
-            -- Attempt to pull xwOBA if it exists, otherwise we'll return nulls
-            -- Some dbs use 'xwOBA', 'wOBA', 'ExitSpeed', 'LaunchAngle'
-            -- We cast safe columns to ensure consistency
             ExitSpeed,
             Angle
         FROM `master-trackman-project.master_trackman_dataset.2025_data`
         UNION ALL
-        SELECT 
+        SELECT
             Batter,
+            BatterTeam,
+            PitcherTeam,
             GameDate,
             PitcherThrows,
             TaggedPitchType as PitchType,
@@ -82,6 +88,7 @@ def process_and_save_data(rows):
         # We create a dictionary per pitch for the frontend
         pitch_data = {
             "GameDate": gamedate,
+            "Opponent": get_team_name(row.PitcherTeam) if row.PitcherTeam else None,
             "PitcherHand": row.PitcherThrows,
             "PitchType": row.PitchType,
             "Balls": row.Balls,
@@ -92,8 +99,6 @@ def process_and_save_data(rows):
             "KorBB": row.KorBB,
             "ExitSpeed": row.ExitSpeed,
             "Angle": row.Angle,
-            # If your query fetches an actual xwOBA column, add it here, 
-            # e.g., "xwOBA": row.get('xwOBA', None)
         }
         batters[batter_name].append(pitch_data)
         
