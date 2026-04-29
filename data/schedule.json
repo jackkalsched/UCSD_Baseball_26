@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-28T17:08:13Z",
+  "updated": "2026-04-29T10:12:48Z",
   "games": [
     {
       "date": "Feb 13 (Fri)",
@@ -331,8 +331,8 @@
       "opponent": "Loyola Marymount",
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
-      "result": "",
-      "status": "upcoming"
+      "result": "W,10-0(7 Inn.)",
+      "status": "completed"
     },
     {
       "date": "May 1 (Fri)",
