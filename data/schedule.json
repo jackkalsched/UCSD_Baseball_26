@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-01T09:53:43Z",
+  "updated": "2026-05-02T09:14:22Z",
   "games": [
     {
       "date": "Feb 13 (Fri)",
@@ -340,8 +340,8 @@
       "opponent": "Long Beach State",
       "location": "Long Beach, Calif.",
       "home_away": "away",
-      "result": "",
-      "status": "upcoming"
+      "result": "L,1-3",
+      "status": "completed"
     },
     {
       "date": "May 2 (Sat)",
