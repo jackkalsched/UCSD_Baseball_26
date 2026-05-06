@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-05T10:09:08Z",
+  "updated": "2026-05-06T10:24:55Z",
   "games": [
     {
       "date": "Feb 13 (Fri)",
@@ -367,8 +367,8 @@
       "opponent": "San Diego State",
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
-      "result": "",
-      "status": "upcoming"
+      "result": "W,8-4",
+      "status": "completed"
     },
     {
       "date": "May 8 (Fri)",
