@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-08T09:46:34Z",
+  "updated": "2026-05-09T09:26:22Z",
   "games": [
     {
       "date": "Feb 13 (Fri)",
@@ -376,8 +376,8 @@
       "opponent": "Cal State Bakersfield",
       "location": "Bakersfield, Calif.",
       "home_away": "away",
-      "result": "",
-      "status": "upcoming"
+      "result": "W,4-2",
+      "status": "completed"
     },
     {
       "date": "May 9 (Sat)",
