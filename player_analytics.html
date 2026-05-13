@@ -51,7 +51,19 @@
             outline: none;
             font-family: inherit;
         }
-        
+
+        .filter-input {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-color);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.4rem 0.55rem;
+            border-radius: 6px;
+            outline: none;
+            font-family: inherit;
+            font-size: 0.8rem;
+            color-scheme: dark;
+        }
+
         .heatmaps-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -59,14 +71,31 @@
         }
 
         @media (max-width: 900px) {
-            .heatmaps-section {
-                grid-template-columns: 1fr;
-            }
+            .heatmaps-section { grid-template-columns: 1fr; }
         }
-        
-        .chart-container {
-            width: 100%;
-            height: 400px;
+
+        .chart-container { width: 100%; height: 400px; }
+        .heatmap-container { width: 100%; }
+
+        .box-score-table {
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .box-score-table th {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0 1.2rem 0.4rem 0;
+            text-align: center;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .box-score-table td {
+            padding: 0.3rem 1.2rem 0 0;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-color);
         }
     </style>
 </head>
@@ -80,7 +109,7 @@
             <nav>
                 <ul style="align-items: center;">
                     <li><a href="index.html">Dashboard</a></li>
-                    <li id="nav-roster"><a href="#">Roster</a></li>
+                    <li id="nav-roster"><a href="roster.html">Roster</a></li>
                     <li><a href="#">Schedule</a></li>
                     <li><a href="player_analytics.html" class="active">Analytics</a></li>
                     <li><a href="#" onclick="logout(); return false;" style="color: var(--secondary-color); margin-left: 1rem;">Logout</a></li>
@@ -91,13 +120,17 @@
         <main>
             <div class="analytics-container">
                 <div class="card glass-panel" style="padding: 1.5rem;">
+                    <a id="back-to-roster" href="roster.html" class="hidden"
+                       style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--text-muted);text-decoration:none;font-size:0.82rem;margin-bottom:0.75rem;">
+                       ← Back to Roster
+                    </a>
                     <h2 style="margin-bottom: 1rem;" id="analytics-title">My Analytics</h2>
                     <div id="loading-state" style="color: var(--secondary-color);">Loading data...</div>
                     <div id="error-state" class="hidden" style="color: #ff6b6b;"></div>
                     
                     <div id="analytics-content" class="hidden">
                         <!-- Filters -->
-                        <div class="filters-toolbar glass-panel" style="margin-bottom: 2rem; background: rgba(0,0,0,0.2);">
+                        <div class="filters-toolbar glass-panel" style="margin-bottom: 2rem; background: rgba(0,0,0,0.2); align-items: flex-start;">
                             <div class="filter-group">
                                 <label for="pitcherHandFilter">Pitcher Hand</label>
                                 <select id="pitcherHandFilter">
@@ -116,13 +149,62 @@
                                 </select>
                             </div>
                             <div class="filter-group">
+                                <label>Date Range</label>
+                                <div style="display:flex;gap:5px;align-items:center;">
+                                    <input type="date" id="dateFrom" class="filter-input">
+                                    <span style="color:var(--text-muted);">–</span>
+                                    <input type="date" id="dateTo" class="filter-input">
+                                </div>
+                            </div>
+                            <div class="filter-group">
                                 <label for="countFilter">Count</label>
                                 <select id="countFilter">
                                     <option value="All">All Counts</option>
-                                    <option value="Ahead">Ahead</option>
-                                    <option value="Even">Even</option>
-                                    <option value="Behind">Behind</option>
+                                    <optgroup label="0 Strikes">
+                                        <option value="0-0">0-0</option>
+                                        <option value="1-0">1-0</option>
+                                        <option value="2-0">2-0</option>
+                                        <option value="3-0">3-0</option>
+                                    </optgroup>
+                                    <optgroup label="1 Strike">
+                                        <option value="0-1">0-1</option>
+                                        <option value="1-1">1-1</option>
+                                        <option value="2-1">2-1</option>
+                                        <option value="3-1">3-1</option>
+                                    </optgroup>
+                                    <optgroup label="2 Strikes">
+                                        <option value="0-2">0-2</option>
+                                        <option value="1-2">1-2</option>
+                                        <option value="2-2">2-2</option>
+                                        <option value="3-2">3-2</option>
+                                    </optgroup>
                                 </select>
+                            </div>
+                        </div>
+
+                        <!-- Game Selector + Box Score -->
+                        <div class="glass-panel" style="padding:1.2rem 1.5rem; margin-bottom:2rem; background:rgba(0,0,0,0.2); border-radius:8px; display:flex; align-items:flex-start; gap:2.5rem; flex-wrap:wrap;">
+                            <div class="filter-group">
+                                <label for="gameSelector">Game</label>
+                                <select id="gameSelector">
+                                    <option value="">All Games</option>
+                                </select>
+                            </div>
+                            <div id="box-score-section" class="hidden" style="flex:1; min-width:320px;">
+                                <div id="box-score-title" style="font-size:0.8rem; color:var(--text-muted); font-weight:600; margin-bottom:0.6rem; letter-spacing:0.03em;"></div>
+                                <table class="box-score-table">
+                                    <thead>
+                                        <tr>
+                                            <th>AB</th><th>H</th><th>2B</th><th>3B</th><th>HR</th>
+                                            <th>BB</th><th>K</th>
+                                            <th>AVG</th><th title="Slugging per ball in play (excludes K's not in data)">cSLG†</th><th title="Expected Weighted On-Base Average (0–1 scale)">xwOBA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="box-score-body"></tbody>
+                                </table>
+                                <p style="font-size:0.68rem; color:var(--text-muted); margin-top:0.5rem; margin-bottom:0;">
+                                    † Contact SLG — total bases per ball in play &nbsp;|&nbsp; xwOBA — expected quality of contact (0–1 scale, D1 avg ≈ .350)
+                                </p>
                             </div>
                         </div>
 
@@ -130,17 +212,20 @@
                         <div class="heatmaps-section" style="margin-bottom: 2rem;">
                             <div class="card glass-panel">
                                 <h3>Slugging Heatmap</h3>
-                                <div id="slg-heatmap" class="chart-container" style="height: 350px;"></div>
+                                <p style="font-size:0.78rem; color:var(--text-muted); margin: -0.5rem 0 0.5rem;">Average total bases per contact by zone — blue = cold, red = hot</p>
+                                <div id="slg-heatmap" class="heatmap-container"></div>
                             </div>
                             <div class="card glass-panel">
                                 <h3>Expected wOBA Heatmap</h3>
-                                <div id="xwoba-heatmap" class="chart-container" style="height: 350px;"></div>
+                                <p style="font-size:0.78rem; color:var(--text-muted); margin: -0.5rem 0 0.5rem;">Expected quality of contact by zone (0–1 scale, D1 avg ≈ .350)</p>
+                                <div id="xwoba-heatmap" class="heatmap-container"></div>
                             </div>
                         </div>
 
                         <!-- Rolling Chart -->
                         <div class="card glass-panel">
-                            <h3>5-Game Rolling xwOBA by Pitch Type</h3>
+                            <h3>Performance Trend by Pitch Type</h3>
+                            <p style="font-size:0.78rem; color:var(--text-muted); margin: -0.5rem 0 0.5rem;">5-game rolling average expected contact quality (xwOBA) — updates with all active filters</p>
                             <div id="rolling-chart" class="chart-container"></div>
                         </div>
                     </div>
@@ -149,7 +234,7 @@
         </main>
     </div>
     
-    <script src="js/player_analytics.js?v=2"></script>
+    <script src="js/player_analytics.js?v=10"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             initAnalytics();

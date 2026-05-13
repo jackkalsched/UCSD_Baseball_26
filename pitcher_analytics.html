@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitcher Analytics — UCSD Baseball</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css?v=2">
+    <script src="js/auth.js?v=2"></script>
+    <script>checkAuth();</script>
+    <style>
+        .pitcher-container { display: flex; flex-direction: column; gap: 2rem; }
+
+        /* Season stat boxes */
+        .season-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            line-height: 1;
+            margin-bottom: 0.35rem;
+        }
+        .stat-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Arsenal table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        .data-table th {
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .data-table td {
+            padding: 0.6rem 0.75rem;
+            color: var(--text-color);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+        .empty-state h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text-color); }
+        .empty-state p  { font-size: 0.88rem; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            margin-bottom: 0.5rem;
+        }
+        .back-link:hover { color: var(--secondary-color); }
+    </style>
+</head>
+<body>
+    <div class="background-decor"></div>
+    <div class="container" style="max-width: 1200px;">
+        <header class="glass-panel">
+            <div class="logo">
+                <a href="index.html" style="text-decoration:none;color:inherit;"><h1>UCSD Baseball</h1></a>
+            </div>
+            <nav>
+                <ul style="align-items: center;">
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li id="nav-roster"><a href="roster.html">Roster</a></li>
+                    <li><a href="#">Schedule</a></li>
+                    <li><a href="player_analytics.html">Analytics</a></li>
+                    <li><a href="#" onclick="logout();return false;" style="color:var(--secondary-color);margin-left:1rem;">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="pitcher-container">
+                <div class="card glass-panel" style="padding: 1.5rem;">
+                    <a href="roster.html" class="back-link">← Back to Roster</a>
+
+                    <h2 id="pitcher-title" style="margin-bottom: 0.3rem;">Pitcher Analytics</h2>
+                    <p id="pitcher-meta" style="color:var(--text-muted);font-size:0.82rem;margin-bottom:1.5rem;"></p>
+
+                    <div id="pitcher-loading" style="color:var(--secondary-color);">Loading data…</div>
+
+                    <!-- Empty state — no Trackman data yet -->
+                    <div id="pitcher-empty" class="hidden">
+                        <div class="empty-state">
+                            <h3>Pitching Data Not Yet Available</h3>
+                            <p>Trackman data for this pitcher has not been loaded into the pipeline.<br>
+                               Once the data pipeline runs, stats will appear here automatically.</p>
+                        </div>
+                    </div>
+
+                    <!-- Full dashboard — shown when data exists -->
+                    <div id="pitcher-content" class="hidden">
+
+                        <!-- Season Summary -->
+                        <h3 style="margin-bottom:0.75rem;">Season Summary</h3>
+                        <p style="font-size:0.78rem;color:var(--text-muted);margin:-0.5rem 0 1rem;">Key rate stats across all appearances this season</p>
+                        <div id="season-stats-grid" class="season-stats-grid" style="margin-bottom:2rem;"></div>
+
+                        <!-- Pitch Arsenal -->
+                        <h3 style="margin-bottom:0.4rem;">Pitch Arsenal</h3>
+                        <p style="font-size:0.78rem;color:var(--text-muted);margin:0 0 1rem;">
+                            Average and max velocity, spin rate, and usage by pitch type
+                        </p>
+                        <div class="glass-panel" style="padding:0;overflow:hidden;margin-bottom:2rem;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Pitch</th>
+                                        <th>Avg Velo</th>
+                                        <th>Max Velo</th>
+                                        <th>Spin Rate</th>
+                                        <th>Usage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="arsenal-tbody"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- Game Log -->
+                        <div id="game-log-section">
+                            <h3 style="margin-bottom:0.4rem;">Game Log</h3>
+                            <p style="font-size:0.78rem;color:var(--text-muted);margin:0 0 1rem;">
+                                Per-appearance stats, most recent first
+                            </p>
+                            <div class="glass-panel" style="padding:0;overflow:hidden;">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th><th>Opponent</th><th>IP</th>
+                                            <th>H</th><th>R</th><th>ER</th>
+                                            <th>BB</th><th>K</th><th>ERA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="game-log-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/pitcher_analytics.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            initPitcherAnalytics();
+        });
+    </script>
+</body>
+</html>
