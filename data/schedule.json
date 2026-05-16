@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-15T10:33:41Z",
+  "updated": "2026-05-16T09:47:25Z",
   "games": [
     {
       "date": "Feb 13 (Fri)",
@@ -412,8 +412,8 @@
       "opponent": "Cal State Fullerton",
       "location": "La Jolla, Calif.Triton Ballpark",
       "home_away": "home",
-      "result": "",
-      "status": "upcoming"
+      "result": "W,10-9(10 Inn.)",
+      "status": "completed"
     },
     {
       "date": "May 16 (Sat)",
